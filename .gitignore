@@ -1,0 +1,41 @@
+# --- Security & Credentials ---
+application-local.properties
+outh_credentials.json
+.env
+.env.local
+*.jks
+*.p12
+*.key
+
+# --- OS / IDE Files ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.iml
+
+# --- Java / Spring Boot (taskmanagementbackend) ---
+taskmanagementbackend/target/
+taskmanagementbackend/.mvn/
+taskmanagementbackend/mvnw
+taskmanagementbackend/mvnw.cmd
+taskmanagementbackend/.classpath
+taskmanagementbackend/.project
+taskmanagementbackend/.settings/
+*.class
+*.jar
+*.war
+
+# --- React / Node (taskmanagementfrontend) ---
+taskmanagementfrontend/node_modules/
+taskmanagementfrontend/dist/
+taskmanagementfrontend/build/
+taskmanagementfrontend/.eslintcache
+taskmanagementfrontend/npm-debug.log*
+taskmanagementfrontend/yarn-debug.log*
+taskmanagementfrontend/yarn-error.log*
+
+# --- Logs ---
+*.log
+logs/
