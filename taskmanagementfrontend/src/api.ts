@@ -28,7 +28,7 @@ export const toggleTaskStatus = (id: number): Promise<AxiosResponse<Task>> =>
 ============================ */
 
 export const getCurrentUser = (): Promise<AxiosResponse<GoogleUser>> =>
-  api.get<GoogleUser>('/api/user/me');
+  api.get<GoogleUser>('/api/user');
 
 /* ============================
    GLOBAL AUTH HANDLING
@@ -41,9 +41,10 @@ api.interceptors.response.use(
 
     // Redirect ONLY if unauthenticated
     if (status === 401) {
-      window.location.href =
-        '/login';
-    }
+  window.location.href =
+    `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/google`;
+}
+
 
     return Promise.reject(error);
   }
