@@ -143,43 +143,38 @@ const Dashboard = ({ user }: { user: GoogleUser }) => {
 
         {/* Task List Rendering */}
         <div className="task-list">
-          {tasks
-            .filter((t) =>
-              filter === 'all'
-                ? true
-                : filter === 'completed'
-                ? t.completed
-                : !t.completed
-            )
-            .map((task) => (
-              <div key={task.id} className={`task-item ${task.completed ? 'completed-row' : ''}`}>
-                <div className="task-main">
-                  <input
-                    type="checkbox"
-                    checked={task.completed}
-                    onChange={() => handleToggle(task.id!)}
-                    className="task-checkbox"
-                  />
-                  <div className="task-text-group">
-                    <span className={`task-title ${task.completed ? 'strikethrough' : ''}`}>
-                      {task.title}
-                    </span>
-                    <span className={`priority-tag ${task.priority.toLowerCase()}`}>
-                      {task.priority}
-                    </span>
-                  </div>
-                </div>
+  {tasks
+    .filter((t) =>
+      filter === 'all' ? true : filter === 'completed' ? t.completed : !t.completed
+    )
+    .map((task) => (
+      <div key={task.id} className="task-item">
+        <div className="task-main">
+          <input
+            type="checkbox"
+            checked={task.completed}
+            onChange={() => handleToggle(task.id!)}
+          />
 
-                <button
-                  className="delete-button"
-                  onClick={() => handleDelete(task.id!)}
-                  title="Delete Task"
-                >
-                  🗑️
-                </button>
-              </div>
-            ))}
+          {/* Use a container div with a gap class */}
+          <div className="task-info">
+            <span className={task.completed ? 'strikethrough' : ''}>
+              {task.title}
+            </span>
 
+            {/* Wrap priority in a styled tag */}
+            <span className={`priority-badge ${task.priority.toLowerCase()}`}>
+              {task.priority}
+            </span>
+          </div>
+        </div>
+
+        <button onClick={() => handleDelete(task.id!)} className="delete-btn">
+          🗑️
+        </button>
+      </div>
+
+    ))}
           {tasks.length === 0 && <p className="empty-msg">No tasks yet. Add one above!</p>}
         </div>
       </div>
