@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 import * as api from '../api';
@@ -31,17 +31,11 @@ const Dashboard = ({ user }: { user: GoogleUser }) => {
 
   // 2. Updated useEffect
   useEffect(() => {
-    let isMounted = true; // Prevents state updates if component unmounts
-
     const loadData = async () => {
       await fetchTasks();
     };
 
     loadData();
-
-    return () => {
-      isMounted = false;
-    };
   }, []); // Empty dependency array means "only run on mount"
 
   // 2. Add Task
