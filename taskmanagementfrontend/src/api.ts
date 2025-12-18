@@ -37,9 +37,16 @@ export const getCurrentUser = (): Promise<AxiosResponse<GoogleUser>> =>
 
 
     // Redirect ONLY if unauthenticated
-  api.interceptors.response.use(
+// api.ts
+api.interceptors.response.use(
   (res) => res,
-  (err) => Promise.reject(err)
+  (err) => {
+    if (err.response && err.response.status === 401) {
+      // This confirms the user is logged out
+      console.log("User is unauthenticated");
+    }
+    return Promise.reject(err);
+  }
 );
 
 
