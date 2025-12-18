@@ -13,34 +13,34 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
+@SuppressWarnings("unused")
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
-            .cors(Customizer.withDefaults())
-
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/error").permitAll()
+                .requestMatchers(
+                    "/",
+                    "/login/**",
+                    "/oauth2/**",
+                    "/api/user"
+                ).permitAll()
                 .anyRequest().authenticated()
             )
-
             .oauth2Login(oauth -> oauth
-                .defaultSuccessUrl("https://task-management-system-s9lo.vercel.app", true)
+                .defaultSuccessUrl(
+                    "https://task-management-system-s9lo.vercel.app",
+                    true
+                )
             )
-
-            // ✅ HARD OVERRIDE LOGOUT BEHAVIOR
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    response.sendRedirect("https://task-management-system-s9lo.vercel.app");
-                })
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
+                .logoutSuccessUrl("https://task-management-system-s9lo.vercel.app")
                 .deleteCookies("JSESSIONID")
             );
 
@@ -51,21 +51,20 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-            Arrays.asList("http://localhost:5173","https://task-management-system-s9lo.vercel.app")
-        );
+        configuration.setAllowedOrigins(Arrays.asList(
+            "http://localhost:5173",
+            "https://task-management-system-s9lo.vercel.app"
+        ));
 
-        configuration.setAllowedMethods(
-            Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-        );
+        configuration.setAllowedMethods(Arrays.asList(
+            "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
+        ));
 
         configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("*"));
 
-        configuration.setAllowedHeaders(
-            Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept")
-        );
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source =
+            new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
