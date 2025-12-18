@@ -16,7 +16,7 @@ const App: React.FC = () => {
   const [priority, setPriority] = useState<'High' | 'Medium' | 'Low'>('Medium');
   const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
   const [loading, setLoading] = useState(true);
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
   /* ============================
      INITIAL AUTH + DATA LOAD
   ============================ */
@@ -79,7 +79,7 @@ const App: React.FC = () => {
           </p>
 
           <a
-            href="http://localhost:8080/oauth2/authorization/google"
+            href={`${backendUrl}/oauth2/authorization/google`}
             className="google-login-btn"
           >
             <img
@@ -118,7 +118,7 @@ const App: React.FC = () => {
           <button
             className="logout-btn"
             onClick={() =>
-              (window.location.href = 'http://localhost:8080/logout')
+              (window.location.href = `${backendUrl}/logout`)
             }
           >
             Logout

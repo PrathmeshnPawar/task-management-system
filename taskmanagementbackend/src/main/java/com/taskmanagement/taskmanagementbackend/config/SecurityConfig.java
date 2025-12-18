@@ -29,7 +29,7 @@ public class SecurityConfig {
             )
 
             .oauth2Login(oauth -> oauth
-                .defaultSuccessUrl("http://localhost:5173", true)
+                .defaultSuccessUrl("https://task-management-system-s9lo.vercel.app", true)
             )
 
             // ✅ HARD OVERRIDE LOGOUT BEHAVIOR
@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessHandler((request, response, authentication) -> {
                     response.setStatus(HttpServletResponse.SC_OK);
-                    response.sendRedirect("http://localhost:5173");
+                    response.sendRedirect("https://task-management-system-s9lo.vercel.app");
                 })
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
@@ -52,7 +52,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-            Arrays.asList("http://localhost:5173")
+            Arrays.asList("http://localhost:5173","https://task-management-system-s9lo.vercel.app")
         );
 
         configuration.setAllowedMethods(
