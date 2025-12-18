@@ -34,7 +34,7 @@ public class SecurityConfig {
             )
             .oauth2Login(oauth -> oauth
                 .defaultSuccessUrl(
-                    "https://task-management-system-s9lo.vercel.app",
+                    "https://task-management-system-s9lo.vercel.app/",
                     true
                 )
             )
