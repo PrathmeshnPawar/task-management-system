@@ -8,7 +8,6 @@ import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class UserController {
 
     @GetMapping("/me")

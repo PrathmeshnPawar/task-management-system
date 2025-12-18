@@ -28,7 +28,7 @@ export const toggleTaskStatus = (id: number): Promise<AxiosResponse<Task>> =>
 ============================ */
 
 export const getCurrentUser = (): Promise<AxiosResponse<GoogleUser>> =>
-  api.get<GoogleUser>('/api/user');
+  api.get<GoogleUser>('/api/user/me');
 
 /* ============================
    GLOBAL AUTH HANDLING

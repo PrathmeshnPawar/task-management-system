@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import * as api from '../api';
 import type { Task } from '../types';
+import '../App.css';
 
 interface GoogleUser {
   name: string;
