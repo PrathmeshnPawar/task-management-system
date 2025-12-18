@@ -13,30 +13,45 @@ const App: React.FC = () => {
   const [user, setUser] = useState<GoogleUser | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [title, setTitle] = useState('');
-  const [priority, setPriority] = useState<'High' | 'Medium' | 'Low'>('Medium');
-  const [filter, setFilter] = useState<'all' | 'completed' | 'pending'>('all');
+  const [priority, setPriority] =
+    useState<'High' | 'Medium' | 'Low'>('Medium');
+  const [filter, setFilter] =
+    useState<'all' | 'completed' | 'pending'>('all');
   const [loading, setLoading] = useState(true);
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   /* ============================
-     INITIAL AUTH + DATA LOAD
+     AUTH CHECK (NO TASKS HERE)
   ============================ */
   useEffect(() => {
-    const init = async () => {
+    const checkAuth = async () => {
       try {
-        const userRes = await api.getCurrentUser();
-        setUser(userRes.data);
-
-        const taskRes = await api.getTasks();
-        setTasks(taskRes.data);
+        const res = await api.getCurrentUser();
+        setUser(res.data);
       } catch {
-        setUser(null);
+        setUser(null); // NOT logged in
       } finally {
         setLoading(false);
       }
     };
 
-    init();
+    checkAuth();
   }, []);
+
+  /* ============================
+     LOAD TASKS AFTER LOGIN
+  ============================ */
+  useEffect(() => {
+    if (!user) return;
+
+    const loadTasks = async () => {
+      const res = await api.getTasks();
+      setTasks(res.data);
+    };
+
+    loadTasks();
+  }, [user]);
 
   /* ============================
      CREATE TASK
@@ -66,7 +81,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
   }
 
   /* ============================
-     NOT AUTHENTICATED → SIGN IN
+     NOT AUTHENTICATED → LOGIN
   ============================ */
   if (!user) {
     return (
@@ -78,6 +93,7 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
             Organize your work and life. Secure and synced with Google.
           </p>
 
+          {/* OAuth MUST be top-level navigation */}
           <a
             href={`${backendUrl}/oauth2/authorization/google`}
             className="google-login-btn"
@@ -99,7 +115,6 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
   return (
     <div className="container">
       <div className="card">
-
         <header className="app-header">
           <div className="user-info">
             <img
@@ -137,7 +152,9 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
           <select
             value={priority}
-            onChange={(e) => setPriority(e.target.value as any)}
+            onChange={(e) =>
+              setPriority(e.target.value as any)
+            }
             className="task-select"
           >
             <option value="Low">Low</option>
@@ -209,7 +226,6 @@ const backendUrl = import.meta.env.VITE_BACKEND_URL;
               </div>
             ))}
         </div>
-
       </div>
     </div>
   );

@@ -34,20 +34,16 @@ export const getCurrentUser = (): Promise<AxiosResponse<GoogleUser>> =>
    GLOBAL AUTH HANDLING
 ============================ */
 
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    const status = error.response?.status;
+
 
     // Redirect ONLY if unauthenticated
-    if (status === 401) {
-  window.location.href =
-    `${import.meta.env.VITE_BACKEND_URL}/oauth2/authorization/google`;
-}
-
-
-    return Promise.reject(error);
-  }
+  api.interceptors.response.use(
+  (res) => res,
+  (err) => Promise.reject(err)
 );
+
+
+
+
 
 export default api;
