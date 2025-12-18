@@ -18,26 +18,26 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                    "/",
-                    "/login/**",
-                    "/oauth2/**"
-                    // "/api/user/me"
-                ).permitAll()
-                .anyRequest().authenticated()
-            )
-            .oauth2Login(oauth -> oauth
-                .defaultSuccessUrl(
-                    "https://task-management-system-s9lo.vercel.app/",
-                    true
-                )
-            )
+@Bean
+SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/", "/login/**", "/oauth2/**").permitAll()
+            .anyRequest().authenticated()
+        )
+        // Add this section below:
+        .exceptionHandling(exception -> exception
+            .authenticationEntryPoint((request, response, authException) -> {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Unauthorized");
+            })
+        )
+        .oauth2Login(oauth -> oauth
+            .defaultSuccessUrl("https://task-management-system-s9lo.vercel.app/", true)
+        )
+        // ... rest of your config
             .logout(logout -> logout
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("https://task-management-system-s9lo.vercel.app")
