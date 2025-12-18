@@ -13,7 +13,7 @@ public class UserController {
     @GetMapping("/me")
     public Map<String, Object> getUser(@AuthenticationPrincipal OAuth2User principal) {
         if (principal == null) {
-            return Collections.emptyMap();
+            return null;
         }
         // Returns Google profile info like name, email, and picture URL
         return principal.getAttributes();
